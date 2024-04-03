@@ -1,0 +1,6 @@
+Data/Hora: 2024-04-01 21:55:01 - Apache - Serviço HTTPD - Status: O serviço está offline
+Data/Hora: 2024-04-01 22:00:01 - Apache - Serviço HTTPD - Status: O serviço está offline
+Data/Hora: 2024-04-01 22:05:01 - Apache - Serviço HTTPD - Status: O serviço está offline
+Data/Hora: 2024-04-01 22:10:01 - Apache - Serviço HTTPD - Status: O serviço está offline
+Data/Hora: 2024-04-01 22:15:01 - Apache - Serviço HTTPD - Status: O serviço está offline
+Data/Hora: 2024-04-01 22:20:01 - Apache - Serviço HTTPD - Status: O serviço está offline
