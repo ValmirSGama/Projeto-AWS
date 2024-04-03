@@ -1,4 +1,4 @@
-###  Projeto AWS-Cloud Pratictioner | Programa de Bolsas-DevSecOps
+<h1 align="center">Projeto AWS-Cloud Pratictioner | Programa de Bolsas-DevSecOps</h1>
 
 ## Descrição:
 ## Requisitos AWS:
@@ -231,4 +231,4 @@ Para verificar se a automatização está funcionando, é preciso abrir os arqui
 - Os endereços IP aqui expostos, foram utilizados apenas para o laboratório desta atividade. Por segurança, ao termino da mesma, essa tópologia foi excluída.
   
 ### Referencia para a criação do projeto
-- https://docs.aws.amazon.com/efs/latest/ug/wt1-test.html#wt1-connect-test-gather-info
+- Site oficial da AWS: https://docs.aws.amazon.com/efs/latest/ug/wt1-test.html#wt1-connect-test-gather-info
