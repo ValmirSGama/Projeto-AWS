@@ -1,6 +1,8 @@
 <h1 align="center">Projeto AWS-Cloud Pratictioner | Programa de Bolsas-DevSecOps</h1>
 
 ## Descrição:
+- Este projeto consistiu na implantação de uma infraestrutura na AWS para hospedar um serviço web utilizando instância EC2 e garantir sua disponibilidade por meio de automação de monitoramento.
+
 ## Requisitos AWS:
 - Gerar uma chave pública para acesso ao ambiente;
 - Criar 1 instância EC2 com o sistema operacional Amazon Linux 2 (Família t3.small, 16 GB SSD);
