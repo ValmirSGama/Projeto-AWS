@@ -42,7 +42,7 @@
 - As demais configurações permaneceram o padrão.
 - Finalizando, click em “Create VPC”, em seguida teremos:
   
- ![Captura de Tela (625)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/250cffc3-d701-49af-95cc-6149ae29bb99)
+![Captura de Tela (625)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/6b407a61-615f-4511-8097-3a53f7391c46)
 
 #### Segue a configuração da nossa topologia.
 
@@ -226,9 +226,17 @@ Para verificar se a automatização está funcionando, é preciso abrir os arqui
 - Podemos verificar que os arquivos .txt foram criados dentro do diretório indicado no script.
 
 ![Captura de Tela (668)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/863e6e6a-771b-4725-9a52-a13ffebd32ee)
-
-- Projeto criando durante o programa de bolsas da Compass.uol com pareceria com a Unicesumar no mês: 04/2024
-- Os endereços IP aqui expostos, foram utilizados apenas para o laboratório desta atividade. Por segurança, ao termino da mesma, essa tópologia foi excluída.
   
 ### Referencia para a criação do projeto
 - Site oficial da AWS: https://docs.aws.amazon.com/efs/latest/ug/wt1-test.html#wt1-connect-test-gather-info
+#
+- Projeto criando por Valmir Sales Gama durante o programa de bolsas da Compass.uol com parceria com a Unicesumar no mês: 04/2024
+- Os endereços IP aqui expostos, foram utilizados apenas para o laboratório desta atividade. Por segurança, ao termino da mesma, essa tópologia foi excluída.
+
+![logo](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/9590599e-71e4-45c2-a9ec-d0cd85cf66d1)
+
+![image](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/c6a05c73-c30b-4225-89b4-594a6b521bf4)
+
+
+
+
