@@ -129,7 +129,7 @@
 ![Captura de Tela (598)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/d41644ec-7acd-4ae0-941e-6d798ca97847)
 
 - Concluído os procedimentos da AWS, vamos precisar baixar e instalar o PuTTY, ele é uma opção para conectar a uma máquina Linux através do sistema operacional Windows.
-- Segue o link para o PuTTY: Download PuTTY: latest release (0.80) (greenend.org.uk) .
+- Segue o link para o PuTTY: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html 
 - Com o PuTTY instalado, vamos fazer as configurações necessárias para acessar a EC2 Linux. 
 - Abra o PuTTY e, em Host Name(or IP address), Insira o IPV4 da EC2 Linux.
 - Em connection type: selecione SSH.
