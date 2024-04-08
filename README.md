@@ -154,13 +154,17 @@
 
 - Após a reinicialização, reconecte-se à sua instância do EC2.
 ### b. Instale o cliente NFS com o comando seguir.
-      sudo yum -y install nfs-utils
+      sudo yum install -y amazon-efs-utils
 - Agora você monta o sistema de arquivos em sua instância do EC2.
 ### 1. Crie um diretório ("efs-mount-point") com o comando:
       sudo mkdir /mnt/efs
        
-### 2. Monte o sistema de arquivos do Amazon EFS com o comando que salvamos num bloco de notas, segue o exemplo do comando, na parte do “/efs-mount-point”, você colocará o caminho que acabamos de criar para o sistema de arquivos, “/mnt/efs”. 
-       sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport mount-target-DNS:/   ~/efs-mount-point  
+### 2. Monte o sistema de arquivos do Amazon EFS com o comando que salvamos num bloco de notas, segue o exemplo do comando. Na parte do “/efs-mount-point”, você colocará o caminho que acabamos de criar para o sistema de arquivos, “/mnt/efs”. 
+       sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport mount-target-DNS:/   ~/efs-mount-point
+
+
+### 3. Exemplo de como ficaria com o caminho que criamos para o sistema de arquivos:
+       sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-07e46519bb3c8b31d.efs.us-east-1.amazonaws.com:/ /mnt/efs
 
 ![Captura de Tela (623)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/cb1ad351-b558-41e0-9bbd-a3034641ad20)
 
@@ -181,7 +185,7 @@
 ![Captura de Tela (647)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/76409ca7-bf8f-45a5-bf8a-b751bc4af56a)
 
 - O Apache vem com uma página inicial padrão, podemos acessá-la através do IP público na barra de endereço de um navegador. É possível editar essa página HTML para exibir o que quisermos. Isso é feito a partir de um arquivo index que pode ser criado dentro do diretório do Apache.
-- Para criar/editar esse arquivo, digite o comando <code>sudo nano index.html</code>. O arquivo HTML digitado nesse documento, é o que será mostrado na página acessada pelo IP público. Segui um exemplo de documento HTML.
+- Para criar/editar esse arquivo, digite o comando `cd /var/www/html` para acessar o caminho correspondente. Agora o comando <code>sudo nano index.html</code> para acessar e editar o arquivo. O arquivo HTML digitado nesse documento, é o que será mostrado na página acessada pelo IP público da EC2. Segui um exemplo de documento HTML.
 
 ![Captura de Tela (650)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/17c4c607-58b3-4bce-9978-e6eecc17d924)
 
@@ -194,14 +198,15 @@
 ### Criar um script validando se o serviço está online ou offline e envie o resultado da validação para o seu diretório no NFS 
 - Criaremos um script utilizando um editor de texto, ao final do nome do arquivo, atribuiremos a extensão .sh.
 - Para essa atividade, o script deve conter data, hora, nome do serviço, status, mensagem personalizada de ONLINE ou OFFLINE e gerar 2 arquivos de saída: um para o serviço online e outro para o serviço offline.
-  - Execute o comando nano <code>service_status.sh</code> para criar e abrir o arquivo do script. Criar o script dentro do diretório EFS. Vamos salvá-lo no caminho /mnt/efs/valmir.
+  - Execute o comando `sudo mkdir /mnt/efs/valmir` para criar a pasta onde o nosso script será salvo.
+  - Dentro da pasta que acabamos de criar, execute o comando <code>nano service_status.sh</code> para criar e abrir o arquivo do script. Depois de Criado, click em salvar.
   - Seguir o exemplo do script criado para essa atividade.
 
 ![Captura de Tela (652)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/ce583e34-6e55-4a61-8cf6-d6ba822f815a)
 
 - No exemplo acima, dentro da estrutura "if/else", indicamos que a condição deve criar no caminho do diretório indicado, e enviar dois arquivos em formato .txt com os resultados da verificação. Sendo um arquivo para o resultado online e outro para o resultado offline.
 - Salve o arquivo do script.
-- Para tornar o arquivo do script executável digite o comando <code>sudo chmod +x [nome do script]</code>, nesse caso, sudo chmod +x service_status.sh.
+- Para tornar o arquivo do script executável digite o comando <code>sudo chmod +x [nome do script]</code>, nesse caso, `sudo chmod +x service_status.sh`.
 - Estando no diretório onde o script foi criado e ativado, execute o comando <code>./service_status.sh</code> para executá-lo. Caso esteja funcionando corretamente e o serviço esteja online, o script vai criar o documento .txt que guarda as informações da validação online.
 - Esse documento pode ser lido com o comando cat + nome do documento: <code>cat httpd-online.txt</code>. Verificaque o funcionamento do script na imagem abaixo.
 
@@ -221,7 +226,7 @@ Para verificar se a automatização está funcionando, é preciso abrir os arqui
 
 ![Captura de Tela (663)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/5eaad49d-1249-4956-ade8-79c969f2d5da)
 
-- Para fazermos a confirmação de que o script realiza a verificação do serviço offline, é preciso interromper o Apache com o comando <code>sudo systemctl stop httpd</code>. Dessa forma, basta aguardar alguns minutos para que o crontap continue executando o script a cada 5 minutos, e poderemos ver a criação do arquivo httpd-offline.txt, que exibe os momentos em que o status do serviço estava offline, segue exemplo.
+- Para fazermos a confirmação de que o script realiza a verificação do serviço offline, é preciso interromper o Apache com o comando <code>sudo systemctl stop httpd</code>. Dessa forma, basta aguardar alguns minutos para que o crontap continue executando o script a cada 5 minutos, e poderemos ver a criação do arquivo (httpd-offline.txt) com o comando `cat httpd-offline.txt`, que exibe os momentos em que o status do serviço estava offline, segue exemplo.
 
 ![Captura de Tela (664)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/3e115d20-a34a-4dd4-bc44-130caf378483)
 
