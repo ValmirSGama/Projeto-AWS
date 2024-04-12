@@ -164,10 +164,9 @@
 
 
 ### 3. Exemplo de como ficaria com o caminho que criamos para o sistema de arquivos:
-       sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-07e46519bb3c8b31d.efs.us-east-1.amazonaws.com:/ /mnt/efs
+       sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-07e46519bb3c8b31d.efs.us-east-1.amazonaws.com:/ /mnt/nfs
 
-![Captura de Tela (623)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/cb1ad351-b558-41e0-9bbd-a3034641ad20)
-
+![Captura de Tela (713)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/fc13e8e4-ebeb-4556-82f6-ccbcf59ff89b)
 
 ### Confirurando a motagem automática
 - vamos realizar uma configuração para que a montagem ocorra automaticamente.
@@ -198,11 +197,11 @@
 ### Criar um script validando se o serviço está online ou offline e envie o resultado da validação para o seu diretório no NFS 
 - Criaremos um script utilizando um editor de texto, ao final do nome do arquivo, atribuiremos a extensão .sh.
 - Para essa atividade, o script deve conter data, hora, nome do serviço, status, mensagem personalizada de ONLINE ou OFFLINE e gerar 2 arquivos de saída: um para o serviço online e outro para o serviço offline.
-  - Execute o comando `sudo mkdir /mnt/efs/valmir` para criar a pasta onde o nosso script será salvo.
+  - Execute o comando `sudo mkdir /mnt/nfs/valmir` para criar a pasta onde o nosso script será salvo.
   - Dentro da pasta que acabamos de criar, execute o comando <code>nano service_status.sh</code> para criar e abrir o arquivo do script. Depois de Criado, click em salvar.
   - Seguir o exemplo do script criado para essa atividade.
 
-![Captura de Tela (652)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/ce583e34-6e55-4a61-8cf6-d6ba822f815a)
+![Captura de Tela (707)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/262c1502-28f8-4c5a-986c-9a76d14e0d4f)
 
 - No exemplo acima, dentro da estrutura "if/else", indicamos que a condição deve criar no caminho do diretório indicado, e enviar dois arquivos em formato .txt com os resultados da verificação. Sendo um arquivo para o resultado online e outro para o resultado offline.
 - Salve o arquivo do script.
@@ -210,8 +209,7 @@
 - Estando no diretório onde o script foi criado e ativado, execute o comando <code>./service_status.sh</code> para executá-lo. Caso esteja funcionando corretamente e o serviço esteja online, o script vai criar o documento .txt que guarda as informações da validação online.
 - Esse documento pode ser lido com o comando cat + nome do documento: <code>cat httpd-online.txt</code>. Verificaque o funcionamento do script na imagem abaixo.
 
- ![Captura de Tela (669)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/6144d736-0bf7-461b-b104-5d20f498215c)
-
+ ![Captura de Tela (708)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/f19f6399-1f42-4cf2-87f4-0a928558fd97)
 
 - O documento informa a data e a hora em que a verificação foi feita, assim como o nome do serviço verificado e uma mensagem indicando que o mesmo está online.
 
@@ -219,20 +217,20 @@
 
 - Para o agendamento da execução do script vamos utilizar o comando crontab.
   - Digite o comando <code>EDITOR=nano crontab -e</code>, para que o nano abra o arquivo crontab.
-Dentro do arquivo digite a linha <code>*/5 * * * * /[caminho de onde está o script/nome do script]</code>. Em nosso caso, ficou dessa forma: <code>*/5 * * * * /mnt/efs/valmir/service_status.sh</code>
+Dentro do arquivo digite a linha `*/5 * * * * /[caminho de onde está o script/nome do script]`. Em nosso caso, ficou dessa forma: `*/5 * * * * /mnt/nfs/valmir/service_status.sh`
 Salve o arquivo e feche o editor.
 Para verificar se a automatização está funcionando, é preciso abrir os arquivos .txt que foram programados para serem criados e guardar as informações da verificação do serviço online e offline. Como a automatização faz com que a verificação programada pelo script ocorra a cada 5 minutos, dê algum tempo para que o arquivo .txt seja atualizado algumas vezes.
   - Abaixo temos a demonstração do arquivo httpd-online.txt exibindo as informações da validação online.
 
-![Captura de Tela (663)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/5eaad49d-1249-4956-ade8-79c969f2d5da)
+![Captura de Tela (710)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/69bf3729-265e-400e-85d1-2ed98c720956)
 
 - Para fazermos a confirmação de que o script realiza a verificação do serviço offline, é preciso interromper o Apache com o comando <code>sudo systemctl stop httpd</code>. Dessa forma, basta aguardar alguns minutos para que o crontap continue executando o script a cada 5 minutos, e poderemos ver a criação do arquivo (httpd-offline.txt) com o comando `cat httpd-offline.txt`, que exibe os momentos em que o status do serviço estava offline, segue exemplo.
 
-![Captura de Tela (664)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/3e115d20-a34a-4dd4-bc44-130caf378483)
+![Captura de Tela (709)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/72776791-77e2-4788-82e3-6395374d2935)
 
 - Podemos verificar que os arquivos .txt foram criados dentro do diretório indicado no script.
 
-![Captura de Tela (668)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/863e6e6a-771b-4725-9a52-a13ffebd32ee)
+![Captura de Tela (712)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/240aed70-53eb-4d28-9106-4f7a619ef130)
   
 ### Referencia para a criação do projeto
 - Site oficial da AWS: https://docs.aws.amazon.com/efs/latest/ug/wt1-test.html#wt1-connect-test-gather-info
