@@ -76,7 +76,7 @@
 
  ![Captura de Tela (626)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/856c30fa-1b99-48be-877a-0494e6708b5c)
 
-- Em Resource type, click em “Inatance”.
+- Em Resource type, click em “Instance”.
 - Em Instance, selecione a que criamos.
 - Em Private IP address, selecione o que for sugerido ao clicar no campo.
 - Em Reassociation, marque “Allow”.
@@ -140,7 +140,7 @@
 ![Captura de Tela (605)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/542eda1c-9418-4371-bd4b-9e699789f641)
 
 - No primeiro acesso ao  PuTTY, aparecerá um painel notificando se você confia no servidor e quer continuar. Click em “Accept”.
-- Dendro do  PuTTY, em login as: insira o nome da máquina EC2 Linux, por padrão, é “ec2-user”.
+- Dendro do  PuTTY, em login as: insira o nome da máquina EC2 Linux, por padrão, é `ec2-user`.
 - Agora você está logado.
 
 ![Captura de Tela (607)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/ee95d3eb-deab-47db-ac6d-474c03fee3cc)
@@ -153,13 +153,13 @@
       sudo reboot  
 
 - Após a reinicialização, reconecte-se à sua instância do EC2.
-### b. Instale o cliente NFS com o comando seguir.
+### b. Estando em usuário root, instale o cliente NFS com o comando a seguir.
       sudo yum install -y amazon-efs-utils
 - Agora você monta o sistema de arquivos em sua instância do EC2.
 ### 1. Crie um diretório ("efs-mount-point") com o comando:
-      sudo mkdir /mnt/efs
+      sudo mkdir /mnt/nfs
        
-### 2. Monte o sistema de arquivos do Amazon EFS com o comando que salvamos num bloco de notas, segue o exemplo do comando. Na parte do “/efs-mount-point”, você colocará o caminho que acabamos de criar para o sistema de arquivos, “/mnt/efs”. 
+### 2. Monte o sistema de arquivos do Amazon EFS com o comando que salvamos num bloco de notas, segue o exemplo do comando. Na parte do “/efs-mount-point”, você colocará o caminho que acabamos de criar para o sistema de arquivos, “/mnt/nfs”. 
        sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport mount-target-DNS:/   ~/efs-mount-point
 
 
@@ -170,21 +170,21 @@
 
 ### Confirurando a motagem automática
 - vamos realizar uma configuração para que a montagem ocorra automaticamente.
-  - Vamos abrir o arquivo para a edição digitando o comando <code>sudo nano /etc/fstab</code>.
-  - Dentro do arquivo, acrescente a linha <code>[ID do sismeta de arquivos]:/ [caminho local] nfs4 nfsvers=4.1,rsize=1048576wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0</code>.
+  - Vamos abrir o arquivo para a edição digitando o comando `sudo nano /etc/fstab`.
+  - Dentro do arquivo, acrescente a linha `[ID do sismeta de arquivos]:/ [caminho local] nfs4 nfsvers=4.1,rsize=1048576wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0`.
   - Substitua o ID do sistema e o caminho local pelas suas credenciais.
-  - Usando o comando <code>df -h</code>, poderá verificar se o sistema de arquivos EFS está montado corretamente.
+  - Usando o comando `df -h`, poderá verificar se o sistema de arquivos EFS está montado corretamente.
  
-### Configurando Apache 
-- Instale o Apache com o comando <code>sudo yum install httpd -y</code>.
-- Inicie o Apache no sistema com o comando <code>sudo systemctl start httpd</code>.
-- Para o Apache iniciar automaticamente, execute o comando <code>sudo systemctl enable httpd</code>.
-- Agora verifique se o apache está em execução através do comando <code>sudo systemctl status httpd</code>.
+### Configurando o Apache 
+- Instale o Apache com o comando `sudo yum install httpd -y`.
+- Inicie o Apache no sistema com o comando `sudo systemctl start httpd`.
+- Para o Apache iniciar automaticamente, execute o comando `sudo systemctl enable httpd`.
+- Agora verifique se o apache está em execução através do comando `sudo systemctl status httpd`.
 
 ![Captura de Tela (647)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/76409ca7-bf8f-45a5-bf8a-b751bc4af56a)
 
 - O Apache vem com uma página inicial padrão, podemos acessá-la através do IP público na barra de endereço de um navegador. É possível editar essa página HTML para exibir o que quisermos. Isso é feito a partir de um arquivo index que pode ser criado dentro do diretório do Apache.
-- Para criar/editar esse arquivo, digite o comando `cd /var/www/html` para acessar o caminho correspondente. Agora o comando <code>sudo nano index.html</code> para acessar e editar o arquivo. O arquivo HTML digitado nesse documento, é o que será mostrado na página acessada pelo IP público da EC2. Segui um exemplo de documento HTML.
+- Para criar/editar esse arquivo, digite o comando `cd /var/www/html` para acessar o caminho correspondente. Agora o comando `sudo nano index.html` para acessar e editar o arquivo. O arquivo HTML digitado nesse documento, é o que será mostrado na página acessada pelo IP público da EC2. Segui um exemplo de documento HTML.
 
 ![Captura de Tela (650)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/17c4c607-58b3-4bce-9978-e6eecc17d924)
 
@@ -194,20 +194,20 @@
 
 ![Captura de Tela (649)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/d09a99db-876d-40c9-88b5-71858b688780)
 
-### Criar um script validando se o serviço está online ou offline e envie o resultado da validação para o seu diretório no NFS 
+### Criar um script validando se o serviço está online ou offline e enviar o resultado da validação para o seu diretório no NFS 
 - Criaremos um script utilizando um editor de texto, ao final do nome do arquivo, atribuiremos a extensão .sh.
 - Para essa atividade, o script deve conter data, hora, nome do serviço, status, mensagem personalizada de ONLINE ou OFFLINE e gerar 2 arquivos de saída: um para o serviço online e outro para o serviço offline.
   - Execute o comando `sudo mkdir /mnt/nfs/valmir` para criar a pasta onde o nosso script será salvo.
-  - Dentro da pasta que acabamos de criar, execute o comando <code>nano service_status.sh</code> para criar e abrir o arquivo do script. Depois de Criado, click em salvar.
-  - Seguir o exemplo do script criado para essa atividade.
+  - Dentro da pasta que acabamos de criar, execute o comando `nano service_status.sh` para criar e abrir o arquivo do script. Depois de Criado, click em salvar.
+  - Segui o exemplo do script criado para essa atividade.
 
-![Captura de Tela (707)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/262c1502-28f8-4c5a-986c-9a76d14e0d4f)
+![Captura de Tela (717)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/134ba6f1-6259-466e-b7fd-26bbaf119199)
 
 - No exemplo acima, dentro da estrutura "if/else", indicamos que a condição deve criar no caminho do diretório indicado, e enviar dois arquivos em formato .txt com os resultados da verificação. Sendo um arquivo para o resultado online e outro para o resultado offline.
 - Salve o arquivo do script.
-- Para tornar o arquivo do script executável digite o comando <code>sudo chmod +x [nome do script]</code>, nesse caso, `sudo chmod +x service_status.sh`.
-- Estando no diretório onde o script foi criado e ativado, execute o comando <code>./service_status.sh</code> para executá-lo. Caso esteja funcionando corretamente e o serviço esteja online, o script vai criar o documento .txt que guarda as informações da validação online.
-- Esse documento pode ser lido com o comando cat + nome do documento: <code>cat httpd-online.txt</code>. Verificaque o funcionamento do script na imagem abaixo.
+- Para tornar o arquivo do script executável digite o comando `sudo chmod +x [nome do script]`, nesse caso, `sudo chmod +x service_status.sh`.
+- Estando no diretório onde o script foi criado e ativado, execute o comando `./service_status.sh` para executá-lo. Caso esteja funcionando corretamente e o serviço esteja online, o script vai criar o documento .txt que guarda as informações da validação online.
+- Esse documento pode ser lido com o comando cat + nome do documento: `cat httpd-online.txt`. Verificaque o funcionamento do script na imagem abaixo.
 
  ![Captura de Tela (708)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/f19f6399-1f42-4cf2-87f4-0a928558fd97)
 
@@ -216,15 +216,15 @@
   ###  Prepar a execução automatizada do script a cada 5 minutos
 
 - Para o agendamento da execução do script vamos utilizar o comando crontab.
-  - Digite o comando <code>EDITOR=nano crontab -e</code>, para que o nano abra o arquivo crontab.
+  - Digite o comando `EDITOR=nano crontab -e`, para que o nano abra o arquivo crontab.
 Dentro do arquivo digite a linha `*/5 * * * * /[caminho de onde está o script/nome do script]`. Em nosso caso, ficou dessa forma: `*/5 * * * * /mnt/nfs/valmir/service_status.sh`
 Salve o arquivo e feche o editor.
 Para verificar se a automatização está funcionando, é preciso abrir os arquivos .txt que foram programados para serem criados e guardar as informações da verificação do serviço online e offline. Como a automatização faz com que a verificação programada pelo script ocorra a cada 5 minutos, dê algum tempo para que o arquivo .txt seja atualizado algumas vezes.
-  - Abaixo temos a demonstração do arquivo httpd-online.txt exibindo as informações da validação online.
+  - Abaixo temos a demonstração do arquivo (httpd-online.txt) exibindo as informações da validação online.
 
 ![Captura de Tela (710)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/69bf3729-265e-400e-85d1-2ed98c720956)
 
-- Para fazermos a confirmação de que o script realiza a verificação do serviço offline, é preciso interromper o Apache com o comando <code>sudo systemctl stop httpd</code>. Dessa forma, basta aguardar alguns minutos para que o crontap continue executando o script a cada 5 minutos, e poderemos ver a criação do arquivo (httpd-offline.txt) com o comando `cat httpd-offline.txt`, que exibe os momentos em que o status do serviço estava offline, segue exemplo.
+- Para fazermos a confirmação de que o script realiza a verificação do serviço offline, é preciso interromper o Apache com o comando `sudo systemctl stop httpd`. Dessa forma, basta aguardar alguns minutos para que o crontap continue executando o script a cada 5 minutos, e poderemos ver a criação do arquivo (httpd-offline.txt) com o comando `cat httpd-offline.txt`, que exibe os momentos em que o status do serviço estava offline, segue exemplo.
 
 ![Captura de Tela (709)](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/72776791-77e2-4788-82e3-6395374d2935)
 
@@ -235,7 +235,7 @@ Para verificar se a automatização está funcionando, é preciso abrir os arqui
 ### Referencia para a criação do projeto
 - Site oficial da AWS: https://docs.aws.amazon.com/efs/latest/ug/wt1-test.html#wt1-connect-test-gather-info
 #
-- Projeto criando por Valmir Sales Gama durante o programa de bolsas da Compass.uol com parceria com a Unicesumar no mês: 04/2024
+- Projeto criando por Valmir Sales Gama durante o programa de bolsas da Compass UOL com parceria com a Unicesumar no mês: 04/2024
 - Os endereços IP aqui expostos, foram utilizados apenas para o laboratório desta atividade. Por segurança, ao termino da mesma, essa tópologia foi excluída.
 
 ![logo](https://github.com/ValmirSGama/Projeto-AWS/assets/111182775/9590599e-71e4-45c2-a9ec-d0cd85cf66d1)
